@@ -46,12 +46,27 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
 ENV WDM_LOG_LEVEL=0
 ENV WDM_LOCAL=1
 
+# Pip upgrade
+RUN pip install --upgrade pip setuptools wheel
+
 # Python bağımlılıklarını kopyala ve kur
 COPY requirements.txt .
+
+# İlk önce numpy'i kur (diğer paketler buna bağımlı)
+RUN pip install --no-cache-dir numpy==1.26.4
+
+# Sonra scikit-learn ve pandas
+RUN pip install --no-cache-dir scikit-learn==1.4.2 pandas==2.2.1
+
+# Diğer tüm bağımlılıkları kur
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Uygulama kodunu kopyala
 COPY . .
+
+# Python path ekle (import sorunları için)
+ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
 
 # Port tanımla
 ENV PORT=8000
@@ -59,11 +74,13 @@ EXPOSE 8000
 
 # Startup script oluştur
 RUN echo '#!/bin/bash\n\
+set -e\n\
 echo "Starting application..."\n\
+echo "Python path: $PYTHONPATH"\n\
 echo "Initializing database..."\n\
-python database/init_db.py || echo "Database already initialized or will initialize on first request"\n\
+cd /app && python database/init_db.py || echo "Database already initialized or will initialize on first request"\n\
 echo "Starting FastAPI server..."\n\
-uvicorn main:app --host 0.0.0.0 --port $PORT\n\
+cd /app && uvicorn main:app --host 0.0.0.0 --port $PORT\n\
 ' > /app/start.sh && chmod +x /app/start.sh
 
 # Startup script ile başlat
