@@ -34,19 +34,39 @@ def scrape_instagram_comments(post_url, max_comments=DEFAULT_MAX_COMMENTS, usern
     
     # Chrome WebDriver kurulum
     chrome_options = ChromeOptions()
+    
+    # Chrome binary path (Docker için)
+    chrome_options.binary_location = "/usr/bin/google-chrome"
+    
+    # Options ekle
     for option in CHROME_OPTIONS:
         chrome_options.add_argument(option)
     
-    # Timeout ayarları
-    chrome_options.page_load_strategy = 'normal'
-    chrome_options.add_argument('--disable-features=VizDisplayCompositor')
+    # Experimental options (memory optimize)
+    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation", "enable-logging"])
+    chrome_options.add_experimental_option('useAutomationExtension', False)
+    
+    # Preferences (memory optimize)
+    prefs = {
+        "profile.default_content_setting_values.notifications": 2,
+        "profile.default_content_settings.popups": 0,
+        "profile.default_content_setting_values.media_stream_mic": 2,
+        "profile.default_content_setting_values.media_stream_camera": 2,
+        "profile.managed_default_content_settings.images": 2,  # Disable images
+    }
+    chrome_options.add_experimental_option("prefs", prefs)
+    
+    # Page load strategy
+    chrome_options.page_load_strategy = 'eager'  # Don't wait for full page load
     
     driver = None
     try:
-        driver = webdriver.Chrome(options=chrome_options)
-        # Headless modda maximize_window() kullanma
-        driver.set_page_load_timeout(30)  # 30 saniye timeout (azaltıldı)
-        driver.set_script_timeout(20)  # 20 saniye (azaltıldı)
+        from selenium.webdriver.chrome.service import Service
+        service = Service()
+        
+        driver = webdriver.Chrome(service=service, options=chrome_options)
+        driver.set_page_load_timeout(30)
+        driver.set_script_timeout(20)
         
         print(f"Post sayfasina gidiliyor: {post_url}")
         driver.get(post_url)
