@@ -77,8 +77,10 @@ RUN echo '#!/bin/bash\n\
 set -e\n\
 echo "Starting application..."\n\
 echo "Python path: $PYTHONPATH"\n\
+echo "Waiting for database..."\n\
+sleep 5\n\
 echo "Initializing database..."\n\
-cd /app && python database/init_db.py || echo "Database already initialized or will initialize on first request"\n\
+cd /app && python database/init_db.py\n\
 echo "Starting FastAPI server..."\n\
 cd /app && uvicorn backend.main:app --host 0.0.0.0 --port $PORT\n\
 ' > /app/start.sh && chmod +x /app/start.sh
