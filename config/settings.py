@@ -37,11 +37,11 @@ if ENVIRONMENT == "production" and SECRET_KEY == "cyberbullying-secret-key-chang
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60 * 24 * 7))  # 7 days default
 
-# Scraping settings (Free tier için optimize - düşük memory)
-DEFAULT_MAX_COMMENTS = 30  # Free tier için daha az yorum (memory limit - 512MB RAM)
-SCROLL_TIMEOUT = 60  # 1 minute (daha kısa timeout)
-SCROLL_DELAY = 2  # seconds (hızlandırıldı)
-LONG_SCROLL_DELAY = 3  # seconds after 3rd scroll (hızlandırıldı)
+# Scraping settings (Free tier için optimize - düşük memory + health check)
+DEFAULT_MAX_COMMENTS = 10  # Çok az yorum (health check için hızlı olmalı)
+SCROLL_TIMEOUT = 15  # 15 saniye max (health check timeout'tan kısa)
+SCROLL_DELAY = 1  # seconds (çok hızlı)
+LONG_SCROLL_DELAY = 1  # seconds after 3rd scroll (çok hızlı)
 
 # Chrome options (ULTRA MINIMAL - FREE TIER 512MB)
 # Başka projelerde çalışan minimal konfigürasyon
