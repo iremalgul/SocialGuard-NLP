@@ -1,7 +1,7 @@
 databases:
   # PostgreSQL Database
   - name: cyberbullying-db
-    plan: starter
+    plan: free
     region: frankfurt
 
 services:
@@ -11,7 +11,7 @@ services:
     name: cyberbullying-backend
     env: python
     region: frankfurt
-    plan: starter
+    plan: free
     buildCommand: "pip install -r requirements.txt"
     startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT"
     healthCheckPath: /api/health
