@@ -1,0 +1,31 @@
+# Render ignore file - Backend için
+# Frontend build sırasında bu dosyalar ignore edilecek
+
+# Python files (backend only)
+*.py
+*.pyc
+__pycache__/
+requirements.txt
+runtime.txt
+Dockerfile
+.dockerignore
+
+# Backend directories
+database/
+few_shot/
+scrapers/
+config/
+ML/
+
+# Data files
+data/
+
+# Deployment scripts
+build.sh
+start.sh
+*.ps1
+
+# Environment
+.env
+.env.local
+
