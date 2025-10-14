@@ -11,6 +11,9 @@ import RegisterPage from './pages/RegisterPage';
 import './App.css';
 import './styles/Auth.css';
 
+// API base URL - Production'da environment variable'dan al
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
 function App() {
   const [apiStatus, setApiStatus] = useState('checking');
 
@@ -22,7 +25,7 @@ function App() {
 
   const checkApiStatus = async () => {
     try {
-      const response = await fetch('/api/health');
+      const response = await fetch(`${API_URL}/api/health`);
       if (response.ok) {
         setApiStatus('connected');
       } else {

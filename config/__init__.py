@@ -10,8 +10,8 @@ DATA_DIR = BASE_DIR / "data"
 TEMPLATES_DIR = BASE_DIR / "templates"
 STATIC_DIR = BASE_DIR / "static"
 
-# Gemini API
-GEMINI_API_KEY = "AIzaSyCUbt_itNnF3m9aHxjqCAOlqsVreJhJGP0"
+# Gemini API - Production'da environment variable'dan al
+GEMINI_API_KEY = os.getenv("GOOGLE_API_KEY", "")
 
 # Label mappings and categories
 LABEL_MAP = {

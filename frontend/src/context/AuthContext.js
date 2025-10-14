@@ -3,8 +3,8 @@ import axios from 'axios';
 
 const AuthContext = createContext();
 
-// API base URL
-const API_URL = 'http://localhost:8000';
+// API base URL - Production'da REACT_APP_API_URL environment variable'ından al
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
 // Axios instance with interceptor for auth token
 const api = axios.create({
