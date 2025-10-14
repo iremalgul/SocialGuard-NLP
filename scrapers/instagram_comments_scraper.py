@@ -37,10 +37,16 @@ def scrape_instagram_comments(post_url, max_comments=DEFAULT_MAX_COMMENTS, usern
     for option in CHROME_OPTIONS:
         chrome_options.add_argument(option)
     
-    driver = webdriver.Chrome(options=chrome_options)
-    driver.maximize_window()
+    # Timeout ayarları
+    chrome_options.page_load_strategy = 'normal'
+    chrome_options.add_argument('--disable-features=VizDisplayCompositor')
     
+    driver = None
     try:
+        driver = webdriver.Chrome(options=chrome_options)
+        # Headless modda maximize_window() kullanma
+        driver.set_page_load_timeout(60)  # 60 saniye timeout
+        driver.set_script_timeout(30)
         print(f"Post sayfasina gidiliyor: {post_url}")
         driver.get(post_url)
         time.sleep(10)  # Sayfa yüklenmesini bekle
@@ -327,7 +333,12 @@ def scrape_instagram_comments(post_url, max_comments=DEFAULT_MAX_COMMENTS, usern
             'total_comments': 0
         }
     finally:
-        driver.quit()
+        if driver:
+            try:
+                driver.quit()
+                print("Chrome driver kapatıldı")
+            except Exception as e:
+                print(f"Driver kapatma hatası: {e}")
 
 # Test
 if __name__ == "__main__":
