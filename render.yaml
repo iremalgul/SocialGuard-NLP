@@ -36,9 +36,8 @@ services:
   - type: web
     name: cyberbullying-frontend
     env: static
-    rootDir: frontend
-    buildCommand: "npm install && npm run build"
-    staticPublishPath: ./build
+    buildCommand: "cd frontend && npm install && npm run build"
+    staticPublishPath: frontend/build
     pullRequestPreviewsEnabled: true
     headers:
       - path: /*
@@ -53,5 +52,5 @@ services:
         destination: /index.html
     envVars:
       - key: REACT_APP_API_URL
-        value: https://cyberbullying-backend.onrender.com  # Backend URL'inizi buraya ekleyin
+        value: https://cyberbullying-backend-9391.onrender.com  # Backend'in GERÇEK URL'i
 
