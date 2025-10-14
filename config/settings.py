@@ -37,23 +37,23 @@ if ENVIRONMENT == "production" and SECRET_KEY == "cyberbullying-secret-key-chang
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60 * 24 * 7))  # 7 days default
 
-# Scraping settings
-DEFAULT_MAX_COMMENTS = 500  # Daha fazla yorum çek
-SCROLL_TIMEOUT = 120  # 2 minutes
-SCROLL_DELAY = 5  # seconds
-LONG_SCROLL_DELAY = 10  # seconds after 3rd scroll
+# Scraping settings (Free tier için optimize - düşük memory)
+DEFAULT_MAX_COMMENTS = 50  # Free tier için daha az yorum (memory limit)
+SCROLL_TIMEOUT = 60  # 1 minute (daha kısa timeout)
+SCROLL_DELAY = 2  # seconds (hızlandırıldı)
+LONG_SCROLL_DELAY = 3  # seconds after 3rd scroll (hızlandırıldı)
 
-# Chrome options (Production/Docker için optimize edilmiş - 512MB RAM)
+# Chrome options (ULTRA MINIMAL - 512MB RAM için)
 CHROME_OPTIONS = [
-    "--headless=new",  # Headless mode (production için)
+    "--headless=new",
     "--no-sandbox",
     "--disable-dev-shm-usage",
     "--disable-gpu",
     "--disable-software-rasterizer",
     "--disable-extensions",
     "--disable-blink-features=AutomationControlled",
-    "--window-size=1280,720",  # Daha küçük pencere boyutu (memory)
-    "--single-process",  # Docker için önemli
+    "--window-size=800,600",  # Çok küçük pencere (minimum memory)
+    "--single-process",
     "--disable-dev-tools",
     "--no-zygote",
     "--disable-setuid-sandbox",
@@ -62,7 +62,7 @@ CHROME_OPTIONS = [
     "--disable-backgrounding-occluded-windows",
     "--disable-breakpad",
     "--disable-component-extensions-with-background-pages",
-    "--disable-features=TranslateUI,BlinkGenPropertyTrees",
+    "--disable-features=TranslateUI,BlinkGenPropertyTrees,AudioServiceOutOfProcess,IsolateOrigins,site-per-process",
     "--disable-ipc-flooding-protection",
     "--disable-renderer-backgrounding",
     "--enable-features=NetworkService,NetworkServiceInProcess",
@@ -72,6 +72,13 @@ CHROME_OPTIONS = [
     "--mute-audio",
     "--disable-logging",
     "--disable-permissions-api",
+    "--disable-web-security",
+    "--disable-features=VizDisplayCompositor",
+    "--js-flags=--max-old-space-size=256",  # JavaScript heap limit
+    "--disable-accelerated-2d-canvas",
+    "--disable-accelerated-jpeg-decoding",
+    "--disable-accelerated-mjpeg-decode",
+    "--disable-accelerated-video-decode",
     "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 ]
 

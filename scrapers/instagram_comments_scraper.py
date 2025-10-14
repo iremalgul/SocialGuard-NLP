@@ -45,11 +45,12 @@ def scrape_instagram_comments(post_url, max_comments=DEFAULT_MAX_COMMENTS, usern
     try:
         driver = webdriver.Chrome(options=chrome_options)
         # Headless modda maximize_window() kullanma
-        driver.set_page_load_timeout(60)  # 60 saniye timeout
-        driver.set_script_timeout(30)
+        driver.set_page_load_timeout(30)  # 30 saniye timeout (azaltıldı)
+        driver.set_script_timeout(20)  # 20 saniye (azaltıldı)
+        
         print(f"Post sayfasina gidiliyor: {post_url}")
         driver.get(post_url)
-        time.sleep(10)  # Sayfa yüklenmesini bekle
+        time.sleep(5)  # Sayfa yüklenmesini bekle (azaltıldı: 10→5)
         
         # Popup'tan giriş yapma
         if username and password:
@@ -75,7 +76,7 @@ def scrape_instagram_comments(post_url, max_comments=DEFAULT_MAX_COMMENTS, usern
                 # Giriş butonuna tıkla
                 submit_button = driver.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
                 submit_button.click()
-                time.sleep(8)
+                time.sleep(5)  # Azaltıldı: 8→5
                 
                 print("Popup'tan giris yapildi!")
                 
@@ -91,7 +92,7 @@ def scrape_instagram_comments(post_url, max_comments=DEFAULT_MAX_COMMENTS, usern
                 # Ana sayfaya yönlendirildikten sonra tekrar post URL'sine git
                 print("Ana sayfaya yonlendirildi, tekrar post sayfasina gidiliyor...")
                 driver.get(post_url)
-                time.sleep(10)  # Post sayfasının yüklenmesini bekle
+                time.sleep(5)  # Post sayfasının yüklenmesini bekle (azaltıldı: 10→5)
                 
             except Exception as e:
                 print(f"Popup giris yapilamadi: {e}")
