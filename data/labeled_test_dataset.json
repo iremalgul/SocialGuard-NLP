@@ -1,0 +1,62 @@
+[
+  {
+    "comment":"Bu harika bir video! Teşekkürler",
+    "label":0,
+    "username":"user123",
+    "platform":"youtube"
+  },
+  {
+    "comment":"Sen gerçekten aptalsın",
+    "label":1,
+    "username":"angry_user",
+    "platform":"instagram"
+  },
+  {
+    "comment":"Kadınlar hep böyle yapar",
+    "label":2,
+    "username":"troll_account",
+    "platform":"twitter"
+  },
+  {
+    "comment":"Haha ne kadar komiksin (!)",
+    "label":3,
+    "username":"sarcastic_guy",
+    "platform":"instagram"
+  },
+  {
+    "comment":"Çok çirkinsin ya",
+    "label":4,
+    "username":"mean_person",
+    "platform":"youtube"
+  },
+  {
+    "comment":"Çok güzel açıklama eline sağlık",
+    "label":0,
+    "username":"happy_viewer",
+    "platform":"youtube"
+  },
+  {
+    "comment":"Senin gibi dangalaklar yüzünden",
+    "label":1,
+    "username":"angry_troll",
+    "platform":"twitter"
+  },
+  {
+    "comment":"Kızlar hep böyle işte",
+    "label":2,
+    "username":"sexist_user",
+    "platform":"instagram"
+  },
+  {
+    "comment":"Müthiş bir içerik olmuş",
+    "label":0,
+    "username":"cool_user",
+    "platform":"youtube"
+  },
+  {
+    "comment":"Sen tam bir malsın",
+    "label":1,
+    "username":"rude_person",
+    "platform":"instagram"
+  }
+]

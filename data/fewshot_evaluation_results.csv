@@ -1,0 +1,46 @@
+comment,true_label,predicted_label,confidence,correct
+"Paylaşımın için teşekkürler, çok bilgi vericiydi.",0,0,0.629,1
+Bugün toplantı saat kaçta başlayacak?,0,0,0.54,1
+Fotoğraftaki manzara harika görünmüş.,0,0,0.86,1
+"Tarifin ölçüleri nelerdir, paylaşır mısın?",0,0,0.7,1
+Bu konuyu daha detaylı araştıracağım.,0,0,0.551,1
+"Ellerine sağlık, çok başarılı bir çalışma.",0,0,0.5,1
+"Günaydın herkese, güzel bir gün dilerim.",0,0,0.5,1
+"Yardımın için minnettarım, sağ ol.",0,0,0.62,1
+"Ben de benzer bir kitap okumuştum, tavsiye ederim.",0,0,0.652,1
+"Bu fikri uygulamak istiyorum, nasıl başladın?",0,0,0.551,1
+"Tam bir salaksın, ne anlıyorsun sen?",1,1,0.646,1
+"Siktir git, kimse seni dinlemiyor.",1,1,0.643,1
+"Yorumun rezalet, aptalca.",1,1,0.5,1
+Senin kafan çalışmıyor herhalde.,1,1,0.657,1
+Bunu yazan insanın aklı yok mu?,1,1,0.581,1
+Hayatında bir işe yarasaydın keşke.,1,3,0.655,0
+"Tam bir manyaksın, çek git buradan.",1,1,0.635,1
+Şu an gördüğüm en saçma şeysin.,1,1,0.662,1
+"Senden bir cacık olmaz, sus.",1,1,0.529,1
+"İğrenç bir tipsin, tiksiniyorum.",1,4,0.515,0
+"Güzelmişsin, bir kahve içsek neler olur acaba?",2,2,0.5,1
+"Kadın işi bunlar, erkek işi değil.",2,2,0.5,1
+Böyle giyinince erkeklerin ilgisini çekiyorsun.,4,2,0.54,0
+"Kadınsın sonuçta, duygusalsın.",2,2,0.5,1
+Kadınların bu kadar konuşması normal değil.,2,2,0.5,1
+Sence de biraz fazla mı açık giyinmişsin?,4,2,0.5,0
+Böyle poz veren kızlar kolaydır.,2,2,0.5,1
+"Harika fikir, tabi dünya seni bekliyordu.",3,3,0.5,1
+"Zaten kadınlar buna bayılır, değil mi?",3,2,0.5,0
+"Şaşırtıcı derecede iyiymiş, beklemiyordum senden.",3,3,0.78,1
+"Sen farklısın, 'diğer' kızlar gibi değilsin.",3,2,0.5,0
+"Tatlısın ama biraz duygusal yaklaşıyorsun, hani kadınsı.",3,2,0.5,0
+"Tabii, kesinlikle senin hatan değildir.",3,3,0.5,1
+"Ben de bırakayım işi, sen zaten daha iyisini yaparsın.",3,3,0.5,1
+Ne kadar da 'objektif' bir yorum yapmışsın.,3,3,0.515,1
+"Saçın berbat, kuaföre git.",4,4,0.5,1
+"Bu elbise sana hiç yakışmamış, kötü görünüyorsun.",4,4,0.5,1
+"Kilo almışsın, eski halin daha iyiydi.",4,4,0.5,1
+"Makyajın çok abartılı, doğal halini sevmezsin herhalde.",4,4,0.5,1
+"Dişlerin düzeltilmeli, gülüşün iyi değil.",4,4,0.505,1
+Bu fotoğrafta yüzün çok şişmiş gibi çıkmış.,4,4,0.5,1
+"Estetik olduğu belli, doğal halin nerede?",4,4,0.647,1
+"Gözlükler sana yakışmıyor, başka bir çerçeve al.",4,4,0.5,1
+"Senin giyimin modası geçmiş, kötü zevk.",4,4,0.5,1
+Bu saç rengi sana hiç uymamış.,4,4,0.529,1
