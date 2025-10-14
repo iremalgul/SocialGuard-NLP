@@ -2,7 +2,6 @@ databases:
   # PostgreSQL Database
   - name: cyberbullying-db
     plan: free
-    region: frankfurt
 
 services:
 
@@ -10,7 +9,6 @@ services:
   - type: web
     name: cyberbullying-backend
     env: docker
-    region: frankfurt
     plan: free
     dockerfilePath: ./Dockerfile
     dockerCommand: "cd /app && uvicorn backend.main:app --host 0.0.0.0 --port $PORT"
@@ -37,6 +35,7 @@ services:
   - type: web
     name: cyberbullying-frontend
     env: node
+    plan: free
     buildCommand: "cd frontend && npm install && npm run build && cd .."
     startCommand: "npx serve -s frontend/build -l $PORT"
     envVars:
