@@ -6,18 +6,15 @@ databases:
 
 services:
 
-  # Backend API (FastAPI)
+  # Backend API (FastAPI) - Docker ile Chrome desteği
   - type: web
     name: cyberbullying-backend
-    env: python
+    env: docker
     region: frankfurt
     plan: free
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT"
+    dockerfilePath: ./Dockerfile
     healthCheckPath: /api/health
     envVars:
-      - key: PYTHON_VERSION
-        value: "3.11"
       - key: DATABASE_URL
         fromDatabase:
           name: cyberbullying-db

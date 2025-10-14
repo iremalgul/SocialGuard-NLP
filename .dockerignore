@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Git
+.git/
+.gitignore
+
+# Data files
+data/*.csv
+data/*.json
+!data/dataset.csv
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+temp_*
+*.tmp
+
+# Node modules (frontend)
+frontend/node_modules/
+frontend/build/
+
+# Deployment
+.env
+.env.local
+build.sh
+start.sh
+export_database.ps1
+import_to_render.ps1
+
+# Documentation
+*.md
+!README.md
+
+# ML models
+ML/
+
