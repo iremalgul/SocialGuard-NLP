@@ -43,11 +43,19 @@ SCROLL_TIMEOUT = 120  # 2 minutes
 SCROLL_DELAY = 5  # seconds
 LONG_SCROLL_DELAY = 10  # seconds after 3rd scroll
 
-# Chrome options
+# Chrome options (Production/Docker için optimize edilmiş)
 CHROME_OPTIONS = [
+    "--headless=new",  # Headless mode (production için)
     "--no-sandbox",
     "--disable-dev-shm-usage",
+    "--disable-gpu",
+    "--disable-software-rasterizer",
+    "--disable-extensions",
     "--disable-blink-features=AutomationControlled",
+    "--window-size=1920,1080",
+    "--single-process",  # Docker için önemli
+    "--disable-dev-tools",
+    "--no-zygote",
     "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 ]
 
