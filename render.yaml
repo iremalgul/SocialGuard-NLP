@@ -39,8 +39,6 @@ services:
   - type: web
     name: cyberbullying-frontend
     env: static
-    region: frankfurt
-    plan: starter
     buildCommand: "cd frontend && npm install && npm run build"
     staticPublishPath: frontend/build
     pullRequestPreviewsEnabled: true
