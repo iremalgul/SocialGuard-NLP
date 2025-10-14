@@ -32,12 +32,12 @@ services:
       - key: FRONTEND_URL
         value: https://cyberbullying-frontend.onrender.com  # Frontend URL'inizi buraya ekleyin
 
-  # Frontend (React) - Static Site
-  - type: static
+  # Frontend (React)
+  - type: web
     name: cyberbullying-frontend
-    rootDir: frontend
-    buildCommand: "npm install && npm run build"
-    staticPublishPath: ./build
+    env: static
+    buildCommand: "cd frontend && npm install && npm run build"
+    staticPublishPath: frontend/build
     pullRequestPreviewsEnabled: true
     headers:
       - path: /*
