@@ -9,6 +9,7 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 // Axios instance with interceptor for auth token
 const api = axios.create({
   baseURL: API_URL,
+  timeout: 180000,  // 3 dakika global timeout (scraping için)
 });
 
 // Request interceptor to add auth token

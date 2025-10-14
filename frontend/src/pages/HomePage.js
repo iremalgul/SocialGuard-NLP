@@ -75,6 +75,8 @@ const HomePage = () => {
         max_comments: maxComments,
         threshold: threshold / 100,
         scraping_mode: scrapingMode
+      }, {
+        timeout: 180000  // 3 dakika timeout (scraping için yeterli)
       });
 
       setAnalysis(response.data);
