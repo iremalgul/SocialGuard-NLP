@@ -51,6 +51,7 @@ import_to_render.ps1
 # Documentation
 *.md
 !README.md
+!DEPLOYMENT_NOTES.md
 
 # ML models
 ML/

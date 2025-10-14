@@ -50,7 +50,7 @@ ENV WDM_LOCAL=1
 RUN pip install --upgrade pip setuptools wheel
 
 # Python bağımlılıklarını kopyala ve kur
-COPY requirements.txt .
+COPY backend/requirements.txt .
 
 # İlk önce numpy'i kur (diğer paketler buna bağımlı)
 RUN pip install --no-cache-dir numpy==1.26.4
@@ -80,7 +80,7 @@ echo "Python path: $PYTHONPATH"\n\
 echo "Initializing database..."\n\
 cd /app && python database/init_db.py || echo "Database already initialized or will initialize on first request"\n\
 echo "Starting FastAPI server..."\n\
-cd /app && uvicorn main:app --host 0.0.0.0 --port $PORT\n\
+cd /app && uvicorn backend.main:app --host 0.0.0.0 --port $PORT\n\
 ' > /app/start.sh && chmod +x /app/start.sh
 
 # Startup script ile başlat

@@ -13,9 +13,9 @@ from scrapers.instagram_comments_scraper import scrape_instagram_comments
 
 from config import LABEL_MAP, REVERSE_LABEL_MAP
 from config.settings import ACCESS_TOKEN_EXPIRE_MINUTES
-from utils import clean_unicode_text, load_dataset, generate_mock_user_report
-from few_shot.fewshot_model import few_shot_model
-from models import (
+from backend.utils import clean_unicode_text, load_dataset, generate_mock_user_report
+from backend.few_shot.fewshot_model import few_shot_model
+from backend.models import (
     CommentRequest,
     PredictionResponse,
     DatasetUploadResponse,

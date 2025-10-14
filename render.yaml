@@ -13,6 +13,7 @@ services:
     region: frankfurt
     plan: free
     dockerfilePath: ./Dockerfile
+    dockerCommand: "cd /app && uvicorn backend.main:app --host 0.0.0.0 --port $PORT"
     healthCheckPath: /api/health
     envVars:
       - key: DATABASE_URL
@@ -32,12 +33,12 @@ services:
       - key: FRONTEND_URL
         value: https://cyberbullying-frontend.onrender.com  # Frontend URL'inizi buraya ekleyin
 
-  # Frontend (React)
+  # Frontend (React) - Static Site
   - type: web
     name: cyberbullying-frontend
-    env: static
-    buildCommand: "cd frontend && npm install && npm run build"
-    staticPublishPath: frontend/build
+    env: node
+    buildCommand: "cd frontend && npm install && npm run build && cd .."
+    startCommand: "npx serve -s frontend/build -l $PORT"
     pullRequestPreviewsEnabled: true
     headers:
       - path: /*

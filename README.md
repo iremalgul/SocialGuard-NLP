@@ -17,11 +17,52 @@ AI destekli sosyal medya analiz platformu. Instagram yorumlarını analiz eder, 
 
 ---
 
-## 🚀 Hızlı Kurulum
+## 📁 Proje Yapısı
+
+```
+IBM/
+├── backend/                   # Backend API
+│   ├── main.py               # FastAPI application
+│   ├── models.py             # Pydantic models
+│   ├── utils.py              # Utility functions
+│   ├── few_shot/             # Few-shot learning model
+│   ├── requirements.txt      # Python dependencies
+│   └── runtime.txt           # Python version
+│
+├── frontend/                  # React Frontend
+│   ├── src/
+│   │   ├── pages/            # Ana sayfalar
+│   │   ├── components/       # Bileşenler
+│   │   └── context/          # AuthContext
+│   └── package.json          # npm dependencies
+│
+├── config/                    # Shared configuration
+│   ├── __init__.py           # API keys, label maps
+│   └── settings.py           # Database, Instagram config
+│
+├── database/                  # Database models & utils
+│   ├── database.py           # SQLAlchemy setup
+│   ├── db_models.py          # User, Analysis, Prediction models
+│   ├── auth_utils.py         # JWT, password hashing
+│   └── init_db.py            # Database initialization
+│
+├── scrapers/                  # Instagram scraper
+│   └── instagram_comments_scraper.py
+│
+├── data/                      # Training data
+│   └── dataset.csv           # 2,147 labeled Turkish comments
+│
+├── Dockerfile                 # Docker configuration
+└── render.yaml               # Render deployment config
+```
+
+---
+
+## 🚀 Hızlı Kurulum (Local)
 
 ### Gereksinimler
-- Python 3.8+
-- Node.js 14+
+- Python 3.11+
+- Node.js 16+
 - PostgreSQL 12+
 - Google Gemini API Key
 
@@ -34,26 +75,23 @@ CREATE DATABASE cyberbullying_db;
 \q
 ```
 
-**config/settings.py** dosyasında database şifrenizi güncelleyin:
-```python
-DATABASE_PASSWORD = "your_postgres_password"
-```
+**config/settings.py** dosyasında database ayarlarını güncelleyin (veya .env kullanın).
 
 ### 2️⃣ Backend Kurulumu
 
 ```bash
 # Python paketlerini yükleyin
-pip install -r requirements.txt
+pip install -r backend/requirements.txt
 
 # Database tablolarını oluşturun
 python database/init_db.py
 ```
 
-**Gemini API Key**: `config/__init__.py` dosyasında API key'inizi güncelleyin:
-```python
-GEMINI_API_KEY = "YOUR_API_KEY_HERE"  # Satır 14
+**Gemini API Key**: `config/__init__.py` dosyasında API key'inizi güncelleyin veya environment variable kullanın:
+```bash
+export GOOGLE_API_KEY="your_gemini_api_key"
 ```
-- API Key alma: https://makersuite.google.com/app/apikey
+- API Key alma: https://aistudio.google.com/app/apikey
 
 ### 3️⃣ Frontend Kurulumu
 
@@ -69,7 +107,7 @@ cd ..
 
 ### Backend Başlatma
 ```bash
-python main.py
+uvicorn backend.main:app --reload --port 8000
 ```
 Backend: `http://localhost:8000` | API Docs: `http://localhost:8000/docs`
 
@@ -81,7 +119,7 @@ npm start
 Frontend: `http://localhost:3000`
 
 ### İlk Kullanıcı
-Register sayfasından yeni hesap oluşturun veya giriş yapın.
+Register sayfasından yeni hesap oluşturun ve giriş yapın.
 
 ---
 
@@ -123,28 +161,6 @@ Register sayfasından yeni hesap oluşturun veya giriş yapın.
 
 ---
 
-## 📁 Proje Yapısı
-
-```
-IBM/
-├── config/                     # Ayarlar ve konfigürasyon
-├── database/                   # Database modelleri ve utils
-├── few_shot/                   # Few-shot learning AI modeli
-├── scrapers/                   # Instagram scraper
-├── data/                       # Dataset ve çıktılar
-├── frontend/                   # React uygulaması
-│   ├── src/
-│   │   ├── pages/             # Ana sayfalar
-│   │   ├── components/        # Bileşenler
-│   │   └── context/           # AuthContext
-├── main.py                    # FastAPI backend
-├── models.py                  # Pydantic modeller
-├── utils.py                   # Yardımcı fonksiyonlar
-└── requirements.txt           # Python bağımlılıkları
-```
-
----
-
 ## 🔌 API Endpoints (Özet)
 
 ### Authentication
@@ -167,36 +183,16 @@ IBM/
 
 ---
 
-## 🐛 Sorun Giderme
+## 🌐 Production Deployment (Render)
 
-### PostgreSQL Bağlantı Hatası
-```bash
-# Servis çalışıyor mu?
-Get-Service -Name postgresql*
+Render.com platformunda canlıya almak için:
 
-# Şifre ve ayarları kontrol edin
-config/settings.py
-```
+1. Tüm deployment talimatları → **[DEPLOYMENT_NOTES.md](./DEPLOYMENT_NOTES.md)**
+2. Blueprint ile tek seferde deploy
+3. Environment variables ayarlayın
+4. Frontend ve Backend otomatik çalışacak!
 
-### Python Modül Hatası
-```bash
-pip install -r requirements.txt --upgrade
-```
-
-### Gemini API Hatası
-- API key'i kontrol edin: `config/__init__.py` (satır 14)
-- Yeni key alın: https://makersuite.google.com/app/apikey
-
-### Frontend Port Hatası
-```bash
-# Farklı port kullanın
-PORT=3001 npm start
-```
-
-### Scraping Çalışmıyor
-- Chrome browser güncel olmalı
-- Internet bağlantısı aktif olmalı
-- Bazı post'lar için Instagram login gerekebilir
+**Not:** Instagram scraping Docker container'da çalışır (Chrome + Selenium dahil).
 
 ---
 
@@ -208,6 +204,7 @@ PORT=3001 npm start
 - Google Gemini 2.0 Flash - AI model
 - Selenium - Web scraping
 - Scikit-learn - TF-IDF similarity
+- Docker - Containerization
 
 **Frontend:**
 - React 18 - UI library
@@ -231,11 +228,44 @@ PORT=3001 npm start
 
 ---
 
+## 🐛 Sorun Giderme
+
+### PostgreSQL Bağlantı Hatası
+```bash
+# Servis çalışıyor mu?
+Get-Service -Name postgresql*
+
+# Şifre ve ayarları kontrol edin
+config/settings.py
+```
+
+### Python Modül Hatası
+```bash
+pip install -r backend/requirements.txt --upgrade
+```
+
+### Gemini API Hatası
+- API key'i kontrol edin: Environment variable `GOOGLE_API_KEY`
+- Yeni key alın: https://aistudio.google.com/app/apikey
+
+### Frontend Port Hatası
+```bash
+# Farklı port kullanın
+PORT=3001 npm start
+```
+
+### Scraping Çalışmıyor
+- Chrome browser güncel olmalı
+- Internet bağlantısı aktif olmalı
+- Instagram login credentials gerekebilir (config/settings.py)
+
+---
+
 ## 📝 Örnek Kullanım
 
 ### Terminal 1: Backend
 ```bash
-python main.py
+uvicorn backend.main:app --reload --port 8000
 # ✅ Backend: http://localhost:8000
 ```
 
@@ -248,7 +278,7 @@ npm start
 
 ### Tarayıcı
 1. `http://localhost:3000` açın
-2. Register sayfasından yeni hesap oluşturun ve giriş yapın
+2. Register sayfasından yeni hesap oluşturun
 3. Instagram URL girin: `https://www.instagram.com/p/DPErH0FDHom/`
 4. Analiz Et!
 
@@ -259,7 +289,7 @@ npm start
 - ⚠️ Backend ve Frontend her ikisi de açık olmalı
 - ⚠️ PostgreSQL servisi çalışır durumda olmalı
 - ⚠️ Gemini API key geçerli olmalı
-- ⚠️ Internet bağlantısı aktif olmalı
+- ⚠️ Internet bağlantısı aktif olmalı (scraping için)
 
 **İyi kullanımlar!** 🚀
 
