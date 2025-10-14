@@ -76,7 +76,7 @@ const HomePage = () => {
         threshold: threshold / 100,
         scraping_mode: scrapingMode
       }, {
-        timeout: 180000  // 3 dakika timeout (scraping için yeterli)
+        timeout: 600000  // 10 dakika timeout (scraping için güvenli)
       });
 
       setAnalysis(response.data);
