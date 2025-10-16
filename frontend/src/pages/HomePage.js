@@ -2,7 +2,7 @@
 import React, { useState, useCallback } from 'react';
 import { 
   FaSearch, FaPlay, FaCog, FaChartBar, FaExclamationTriangle, 
-  FaComments, FaUsers, FaEye, FaEyeSlash, FaCopy, FaCircle, FaUser 
+  FaComments, FaUsers, FaEye, FaEyeSlash, FaCopy, FaCircle, FaUser, FaClock 
 } from 'react-icons/fa';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import {
@@ -36,6 +36,7 @@ const HomePage = () => {
   const [threshold, setThreshold] = useState(80);
   const [scrapingMode, setScrapingMode] = useState('standard');
   const [loading, setLoading] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
   const [analysis, setAnalysis] = useState(null);
   const [showComments, setShowComments] = useState(true);
   const [commentSearch, setCommentSearch] = useState('');
@@ -67,7 +68,16 @@ const HomePage = () => {
     }
 
     setLoading(true);
+    setLoadingProgress(0);
     setAnalysis(null);
+
+    // Progress bar animasyonu
+    const progressInterval = setInterval(() => {
+      setLoadingProgress(prev => {
+        if (prev >= 90) return prev; // 90'da dur, tamamlandığında 100'e gider
+        return prev + Math.random() * 15;
+      });
+    }, 1000);
 
     try {
       const response = await api.post('/api/social-media-analysis', {
@@ -79,6 +89,7 @@ const HomePage = () => {
         timeout: 600000  // 10 dakika timeout (scraping için güvenli)
       });
 
+      setLoadingProgress(100); // İşlem tamamlandı
       setAnalysis(response.data);
       
       // Debug: Response'u console'a yazdır
@@ -89,7 +100,11 @@ const HomePage = () => {
       alert('Hata: ' + errorMessage);
       console.error('Analiz hatası:', error);
     } finally {
-      setLoading(false);
+      clearInterval(progressInterval);
+      setTimeout(() => {
+        setLoading(false);
+        setLoadingProgress(0);
+      }, 500);
     }
   };
 
@@ -243,19 +258,47 @@ const HomePage = () => {
         </span>
       </div>
 
-      {/* Loading Overlay */}
+      {/* Modern Loading Overlay */}
       {loading && (
         <div className="loading-overlay">
-          <div className="loading-content">
-            <div className="spinner-border text-primary mb-3" role="status">
-              <span className="visually-hidden">Yükleniyor...</span>
+          <div className="loading-content-modern">
+            {/* Modern Spinner */}
+            <div className="loading-icon-wrapper">
+              <div className="spinner-modern"></div>
             </div>
-            <h5>Sosyal Medya Analizi Yapılıyor</h5>
-            <p className="text-muted">
+            
+            {/* Başlık */}
+            <h4 className="loading-title">Sosyal Medya Analizi Yapılıyor</h4>
+            
+            {/* Açıklama */}
+            <p className="loading-description">
               {scrapingMode === 'advanced' 
-                ? 'Gelişmiş Selenium ile yorumlar çekiliyor... Bu işlem daha uzun sürebilir.'
-                : 'Selenium ile sosyal medya analizi yapılıyor...'
+                ? 'Gelişmiş Selenium ile yorumlar çekiliyor ve AI ile analiz ediliyor...'
+                : 'Instagram yorumları çekiliyor ve AI ile analiz ediliyor...'
               }
+            </p>
+            
+            {/* Progress Bar */}
+            <div className="progress-bar-container">
+              <div className="progress-bar-modern">
+                <div 
+                  className="progress-bar-fill" 
+                  style={{ width: `${loadingProgress}%` }}
+                >
+                  <span className="progress-percentage">{Math.round(loadingProgress)}%</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Tahmini Süre */}
+            <div className="estimated-time">
+              <FaClock className="me-2" />
+              <span>Tahmini Süre: 5-10 dakika</span>
+            </div>
+            
+            {/* Bilgilendirme */}
+            <p className="loading-info">
+              Lütfen sayfayı kapatmayın, işlem devam ediyor...
             </p>
           </div>
         </div>
