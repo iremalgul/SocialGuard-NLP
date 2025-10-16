@@ -7,7 +7,9 @@ const ManualAnalysisPage = () => {
   const { api } = useAuth();
   const [comment, setComment] = useState('');
   const [batchComments, setBatchComments] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [singleLoading, setSingleLoading] = useState(false);
+  const [batchLoading, setBatchLoading] = useState(false);
+  const [datasetLoading, setDatasetLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [batchResults, setBatchResults] = useState(null);
   const [apiStatus, setApiStatus] = useState('checking');
@@ -46,7 +48,7 @@ const ManualAnalysisPage = () => {
       return;
     }
 
-    setLoading(true);
+    setSingleLoading(true);
     setResult(null);
 
     try {
@@ -58,7 +60,7 @@ const ManualAnalysisPage = () => {
     } catch (error) {
       alert('Hata: ' + (error.response?.data?.detail || error.message));
     } finally {
-      setLoading(false);
+      setSingleLoading(false);
     }
   };
 
@@ -70,7 +72,7 @@ const ManualAnalysisPage = () => {
       return;
     }
 
-    setLoading(true);
+    setBatchLoading(true);
     setBatchResults(null);
 
     try {
@@ -79,7 +81,7 @@ const ManualAnalysisPage = () => {
     } catch (error) {
       alert('Hata: ' + (error.response?.data?.detail || error.message));
     } finally {
-      setLoading(false);
+      setBatchLoading(false);
     }
   };
 
@@ -87,7 +89,7 @@ const ManualAnalysisPage = () => {
     const file = event.target.files[0];
     if (!file) return;
 
-    setLoading(true);
+    setDatasetLoading(true);
     setDatasetResult(null);
 
     const formData = new FormData();
@@ -97,7 +99,8 @@ const ManualAnalysisPage = () => {
       const response = await api.post('/api/upload-dataset', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
-        }
+        },
+        timeout: 0 // Timeout yok
       });
       
       setDatasetResult(response.data);
@@ -119,15 +122,31 @@ const ManualAnalysisPage = () => {
     } catch (error) {
       alert('Dosya yükleme hatası: ' + (error.response?.data?.detail || error.message));
     } finally {
-      setLoading(false);
+      setDatasetLoading(false);
     }
   };
 
-  const handleDownloadDataset = () => {
-    if (!datasetResult || !datasetResult.download_url) return;
+  const handleDownloadDataset = async () => {
+    if (!datasetResult || !datasetResult.output_file) return;
     
-    const downloadUrl = `${API_BASE.replace('/api', '')}${datasetResult.download_url}`;
-    window.open(downloadUrl, '_blank');
+    try {
+      // Backend'den dosyayı al
+      const response = await api.get(`/api/download-dataset/${datasetResult.output_file}`, {
+        responseType: 'blob'
+      });
+      
+      // Blob'u indir
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', datasetResult.output_file);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      alert('İndirme hatası: ' + (error.response?.data?.detail || error.message));
+    }
   };
 
   return (
@@ -176,15 +195,15 @@ const ManualAnalysisPage = () => {
                   <button 
                     className="btn btn-primary btn-lg" 
                     onClick={predictCategory}
-                    disabled={loading}
+                    disabled={singleLoading}
                   >
                     <FaSearch className="me-2" />
                     Kategori Tahmin Et
                   </button>
                 </div>
 
-                {/* Loading */}
-                {loading && (
+                {/* Tekli Analiz Loading */}
+                {singleLoading && (
                   <div className="text-center py-4">
                     <div className="spinner-border text-primary" role="status">
                       <span className="visually-hidden">Yükleniyor...</span>
@@ -246,12 +265,22 @@ const ManualAnalysisPage = () => {
                   <button 
                     className="btn btn-info" 
                     onClick={batchPredict}
-                    disabled={loading}
+                    disabled={batchLoading}
                   >
                     <FaList className="me-2" />
                     Toplu Tahmin Et
                   </button>
                 </div>
+
+                {/* Toplu Analiz Loading */}
+                {batchLoading && (
+                  <div className="text-center py-4 mt-3">
+                    <div className="spinner-border text-info" role="status">
+                      <span className="visually-hidden">Yükleniyor...</span>
+                    </div>
+                    <p className="mt-2 text-muted">Yorumlar toplu olarak analiz ediliyor...</p>
+                  </div>
+                )}
 
                 {/* Toplu Sonuçlar */}
                 {batchResults && (
@@ -293,7 +322,7 @@ const ManualAnalysisPage = () => {
                     <br />
                     <small>AI her yorum için otomatik olarak kategori (0-4) hesaplayacak ve JSON olarak indirebilirsiniz.</small>
                   </div>
-                  <div className="upload-area" onClick={() => document.getElementById('fileInput').click()}>
+                  <div className="upload-area" onClick={() => !datasetLoading && document.getElementById('fileInput').click()}>
                     <FaUpload className="fa-3x text-muted mb-3" />
                     <h5>CSV Dosyasını Sürükleyin veya Tıklayın</h5>
                     <p className="text-muted">Format: comment, username, platform</p>
@@ -303,9 +332,24 @@ const ManualAnalysisPage = () => {
                       accept=".csv" 
                       style={{ display: 'none' }}
                       onChange={handleFileUpload}
+                      disabled={datasetLoading}
                     />
                   </div>
                 </div>
+
+                {/* Dataset Loading */}
+                {datasetLoading && (
+                  <div className="text-center py-4 mt-3">
+                    <div className="spinner-border text-warning" role="status">
+                      <span className="visually-hidden">Yükleniyor...</span>
+                    </div>
+                    <p className="mt-2 text-muted">
+                      CSV dosyası yükleniyor ve AI ile analiz ediliyor... 
+                      <br />
+                      <small>Bu işlem birkaç dakika sürebilir.</small>
+                    </p>
+                  </div>
+                )}
 
                 {/* Dataset Sonuçları */}
                 {datasetResult && (

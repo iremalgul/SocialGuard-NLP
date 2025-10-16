@@ -86,7 +86,7 @@ const HomePage = () => {
         threshold: threshold / 100,
         scraping_mode: scrapingMode
       }, {
-        timeout: 600000  // 10 dakika timeout (scraping için güvenli)
+        timeout: 0  // Timeout yok
       });
 
       setLoadingProgress(100); // İşlem tamamlandı

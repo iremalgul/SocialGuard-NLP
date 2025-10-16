@@ -65,8 +65,8 @@ def scrape_instagram_comments(post_url, max_comments=DEFAULT_MAX_COMMENTS, usern
         service = Service()
         
         driver = webdriver.Chrome(service=service, options=chrome_options)
-        driver.set_page_load_timeout(15)  # 15 saniye (health check için)
-        driver.set_script_timeout(10)  # 10 saniye
+        driver.set_page_load_timeout(300)  # 5 dakika (uzun yüklenmeler için)
+        driver.set_script_timeout(300)  # 5 dakika (uzun scriptler için)
         
         print(f"Post sayfasina gidiliyor: {post_url}")
         driver.get(post_url)
